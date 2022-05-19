@@ -28,9 +28,11 @@ app.get("/api/", (req, res) => {
     return res.status(200).json({unix: parsedDate.getTime(), utc: parsedDate.toGMTString()})
 });
 app.get("/api/:date", (req, res) => {
-    const date = req.params.date.length > 10 ? Number(req.params.date) : req.params.date;
+    var date = req.params.date;
+    
+    const parsedDate = isNaN(Number(date)) ? new Date(date) : new Date(Number(date));
 
-    const parsedDate = new Date(date)
+    // console.table({date, param: req.params.date, parsedDate: parsedDate.getTime()})
     
     if(isNaN(parsedDate.getTime())){
       return res.status(500).json({error: "Invalid Date"})
